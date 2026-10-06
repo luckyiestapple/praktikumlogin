@@ -159,6 +159,7 @@ class _LoginPageState extends State<LoginPage>
                     child: ConstrainedBox(
                       constraints: const BoxConstraints(maxWidth: 400),
                       child: Container(
+                        width: double.infinity,
                         padding: const EdgeInsets.symmetric(
                           horizontal: 28,
                           vertical: 36,
@@ -185,6 +186,7 @@ class _LoginPageState extends State<LoginPage>
                                 height: 60,
                                 errorBuilder: (context, error, stackTrace) =>
                                     Row(
+                                      mainAxisSize: MainAxisSize.min,
                                       mainAxisAlignment:
                                           MainAxisAlignment.center,
                                       children: [
