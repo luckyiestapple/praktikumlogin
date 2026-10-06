@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 import 'login_page.dart';
 import 'app_strings.dart'; // import untuk multibahasa
 
@@ -33,6 +34,7 @@ class MyApp extends StatelessWidget {
               seedColor: const Color(0xFF00897B),
               brightness: Brightness.light,
             ),
+            scaffoldBackgroundColor: const Color(0xFFF2F4F7),
           ),
 
           // Tema gelap
@@ -42,6 +44,7 @@ class MyApp extends StatelessWidget {
               seedColor: const Color(0xFF00897B),
               brightness: Brightness.dark,
             ),
+            scaffoldBackgroundColor: const Color(0xFF121212),
           ),
 
           home: LoginPage(), // Memanggil halaman login

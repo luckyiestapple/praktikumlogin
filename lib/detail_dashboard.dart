@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 import 'main.dart' show isDarkModeNotifier, languageNotifier;
 import 'app_strings.dart';
 
@@ -21,7 +22,9 @@ class ProfilPage extends StatelessWidget {
     return namePart
         .replaceAll(RegExp(r'[._]'), ' ')
         .split(' ')
-        .map((w) => w.isNotEmpty ? '${w[0].toUpperCase()}${w.substring(1)}' : '')
+        .map(
+          (w) => w.isNotEmpty ? '${w[0].toUpperCase()}${w.substring(1)}' : '',
+        )
         .join(' ');
   }
 
@@ -34,65 +37,103 @@ class ProfilPage extends StatelessWidget {
       valueListenable: languageNotifier,
       builder: (context, lang, _) {
         final strings = AppStrings.of(lang);
+        final colorScheme = Theme.of(context).colorScheme;
 
         return Scaffold(
-          backgroundColor: const Color(0xFFF2F4F7),
+          backgroundColor: colorScheme.surface,
           appBar: AppBar(
-            title: Text(strings.profile, style: const TextStyle(fontWeight: FontWeight.w700)),
+            title: Text(
+              strings.profile,
+              style: const TextStyle(fontWeight: FontWeight.w700),
+            ),
             backgroundColor: _medisyTeal,
             foregroundColor: Colors.white,
             elevation: 0,
             centerTitle: false,
           ),
-          body: Center(
-            child: ConstrainedBox(
-              constraints: const BoxConstraints(maxWidth: 600),
-              child: Column(
-                children: [
-                  Container(width: double.infinity, height: 30, color: _medisyTeal),
-                  Transform.translate(
-                    offset: const Offset(0, -45),
-                    child: Column(
-                      children: [
-                        CircleAvatar(
-                          radius: 45,
-                          backgroundColor: _medisyTealDark,
-                          child: Text(
-                            initial,
-                            style: const TextStyle(fontSize: 38, fontWeight: FontWeight.bold, color: Colors.white),
-                          ),
-                        ),
-                        const SizedBox(height: 10),
-                        Text(
-                          name,
-                          style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w700, color: Color(0xFF1A1A2E)),
-                        ),
-                      ],
+          body: SingleChildScrollView(
+            physics: const ClampingScrollPhysics(),
+            child: Center(
+              child: ConstrainedBox(
+                constraints: const BoxConstraints(maxWidth: 600),
+                child: Column(
+                  children: [
+                    Container(
+                      width: double.infinity,
+                      height: 30,
+                      color: _medisyTeal,
                     ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 20),
-                    child: Transform.translate(
-                      offset: const Offset(0, -30),
-                      child: Container(
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(16),
-                          boxShadow: [
-                            BoxShadow(color: Colors.black.withOpacity(0.07), blurRadius: 14, offset: const Offset(0, 4)),
-                          ],
-                        ),
-                        child: Column(
-                          children: [
-                            _InfoTile(icon: Icons.email_outlined, label: 'Email', value: email, showDivider: true),
-                            _InfoTile(icon: Icons.local_hospital_outlined, label: strings.clinicLabel, value: 'Klinik Utama Medisy', showDivider: true),
-                            _InfoTile(icon: Icons.badge_outlined, label: strings.statusLabel, value: strings.patientStatus, showDivider: false),
-                          ],
+                    Transform.translate(
+                      offset: const Offset(0, -45),
+                      child: Column(
+                        children: [
+                          CircleAvatar(
+                            radius: 45,
+                            backgroundColor: _medisyTealDark,
+                            child: Text(
+                              initial,
+                              style: const TextStyle(
+                                fontSize: 38,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.white,
+                              ),
+                            ),
+                          ),
+                          const SizedBox(height: 10),
+                          Text(
+                            name,
+                            style: TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.w700,
+                              color: colorScheme.onSurface,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 20),
+                      child: Transform.translate(
+                        offset: const Offset(0, -30),
+                        child: Container(
+                          decoration: BoxDecoration(
+                            color: colorScheme.surfaceContainer,
+                            borderRadius: BorderRadius.circular(16),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.black.withOpacity(0.07),
+                                blurRadius: 14,
+                                offset: const Offset(0, 4),
+                              ),
+                            ],
+                          ),
+                          child: Column(
+                            children: [
+                              _InfoTile(
+                                icon: Icons.email_outlined,
+                                label: 'Email',
+                                value: email,
+                                showDivider: true,
+                              ),
+                              _InfoTile(
+                                icon: Icons.local_hospital_outlined,
+                                label: strings.clinicLabel,
+                                value: 'Klinik Utama Medisy',
+                                showDivider: true,
+                              ),
+                              _InfoTile(
+                                icon: Icons.badge_outlined,
+                                label: strings.statusLabel,
+                                value: strings.patientStatus,
+                                showDivider: false,
+                              ),
+                            ],
+                          ),
                         ),
                       ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
           ),
@@ -118,6 +159,8 @@ class _InfoTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+
     return Column(
       children: [
         Padding(
@@ -130,16 +173,29 @@ class _InfoTile extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(label, style: TextStyle(fontSize: 12, color: Colors.grey[500])),
+                    Text(
+                      label,
+                      style: TextStyle(
+                        fontSize: 12,
+                        color: colorScheme.onSurfaceVariant,
+                      ),
+                    ),
                     const SizedBox(height: 2),
-                    Text(value, style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w600)),
+                    Text(
+                      value,
+                      style: const TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
                   ],
                 ),
               ),
             ],
           ),
         ),
-        if (showDivider) Divider(height: 1, color: Colors.grey[100], indent: 56),
+        if (showDivider)
+          Divider(height: 1, color: colorScheme.outlineVariant, indent: 56),
       ],
     );
   }
@@ -164,11 +220,15 @@ class _PengaturanPageState extends State<PengaturanPage> {
       valueListenable: languageNotifier,
       builder: (context, lang, _) {
         final strings = AppStrings.of(lang);
+        final colorScheme = Theme.of(context).colorScheme;
 
         return Scaffold(
-          backgroundColor: const Color(0xFFF2F4F7),
+          backgroundColor: colorScheme.surface,
           appBar: AppBar(
-            title: Text(strings.settings, style: const TextStyle(fontWeight: FontWeight.w700)),
+            title: Text(
+              strings.settings,
+              style: const TextStyle(fontWeight: FontWeight.w700),
+            ),
             backgroundColor: _medisyTeal,
             foregroundColor: Colors.white,
             elevation: 0,
@@ -177,14 +237,19 @@ class _PengaturanPageState extends State<PengaturanPage> {
           body: Center(
             child: ConstrainedBox(
               constraints: const BoxConstraints(maxWidth: 600),
-              child: Padding(
+              child: SingleChildScrollView(
+                physics: const ClampingScrollPhysics(),
                 padding: const EdgeInsets.all(16),
                 child: Container(
                   decoration: BoxDecoration(
-                    color: Colors.white,
+                    color: colorScheme.surfaceContainer,
                     borderRadius: BorderRadius.circular(16),
                     boxShadow: [
-                      BoxShadow(color: Colors.black.withOpacity(0.07), blurRadius: 14, offset: const Offset(0, 4)),
+                      BoxShadow(
+                        color: Colors.black.withOpacity(0.07),
+                        blurRadius: 14,
+                        offset: const Offset(0, 4),
+                      ),
                     ],
                   ),
                   child: Column(
@@ -195,42 +260,112 @@ class _PengaturanPageState extends State<PengaturanPage> {
                         valueListenable: isDarkModeNotifier,
                         builder: (context, isDark, _) {
                           return SwitchListTile(
-                            contentPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 4),
-                            secondary: const Icon(Icons.dark_mode_outlined, color: _medisyTeal, size: 26),
-                            title: Text(strings.darkModeTitle, style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 14)),
-                            subtitle: Text(strings.darkModeDesc, style: TextStyle(fontSize: 12, color: Colors.grey[500])),
+                            contentPadding: const EdgeInsets.symmetric(
+                              horizontal: 20,
+                              vertical: 4,
+                            ),
+                            secondary: const Icon(
+                              Icons.dark_mode_outlined,
+                              color: _medisyTeal,
+                              size: 26,
+                            ),
+                            title: Text(
+                              strings.darkModeTitle,
+                              style: const TextStyle(
+                                fontWeight: FontWeight.w600,
+                                fontSize: 14,
+                              ),
+                            ),
+                            subtitle: Text(
+                              strings.darkModeDesc,
+                              style: TextStyle(
+                                fontSize: 12,
+                                color: colorScheme.onSurfaceVariant,
+                              ),
+                            ),
                             value: isDark,
                             activeColor: _medisyTeal,
                             onChanged: (val) => isDarkModeNotifier.value = val,
                           );
                         },
                       ),
-                      Divider(height: 1, color: Colors.grey[100], indent: 20),
+                      Divider(
+                        height: 1,
+                        color: colorScheme.outlineVariant,
+                        indent: 20,
+                      ),
 
                       // Toggle Notifikasi
                       SwitchListTile(
-                        contentPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 4),
-                        secondary: const Icon(Icons.notifications_outlined, color: _medisyTeal, size: 26),
-                        title: Text(strings.notifTitle, style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 14)),
-                        subtitle: Text(strings.notifDesc, style: TextStyle(fontSize: 12, color: Colors.grey[500])),
+                        contentPadding: const EdgeInsets.symmetric(
+                          horizontal: 20,
+                          vertical: 4,
+                        ),
+                        secondary: const Icon(
+                          Icons.notifications_outlined,
+                          color: _medisyTeal,
+                          size: 26,
+                        ),
+                        title: Text(
+                          strings.notifTitle,
+                          style: const TextStyle(
+                            fontWeight: FontWeight.w600,
+                            fontSize: 14,
+                          ),
+                        ),
+                        subtitle: Text(
+                          strings.notifDesc,
+                          style: TextStyle(
+                            fontSize: 12,
+                            color: colorScheme.onSurfaceVariant,
+                          ),
+                        ),
                         value: _notifikasi,
                         activeColor: _medisyTeal,
                         onChanged: (val) => setState(() => _notifikasi = val),
                       ),
-                      Divider(height: 1, color: Colors.grey[100], indent: 20),
+                      Divider(
+                        height: 1,
+                        color: colorScheme.outlineVariant,
+                        indent: 20,
+                      ),
 
                       // Pilihan Bahasa
                       ListTile(
-                        contentPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 4),
-                        leading: const Icon(Icons.language_outlined, color: _medisyTeal, size: 26),
-                        title: Text(strings.languageTitle, style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 14)),
-                        subtitle: Text(strings.currentLang, style: TextStyle(fontSize: 12, color: Colors.grey[500])),
-                        trailing: Icon(Icons.chevron_right, color: Colors.grey[400]),
+                        contentPadding: const EdgeInsets.symmetric(
+                          horizontal: 20,
+                          vertical: 4,
+                        ),
+                        leading: const Icon(
+                          Icons.language_outlined,
+                          color: _medisyTeal,
+                          size: 26,
+                        ),
+                        title: Text(
+                          strings.languageTitle,
+                          style: const TextStyle(
+                            fontWeight: FontWeight.w600,
+                            fontSize: 14,
+                          ),
+                        ),
+                        subtitle: Text(
+                          strings.currentLang,
+                          style: TextStyle(
+                            fontSize: 12,
+                            color: colorScheme.onSurfaceVariant,
+                          ),
+                        ),
+                        trailing: Icon(
+                          Icons.chevron_right,
+                          color: Colors.grey[400],
+                        ),
                         onTap: () {
                           showModalBottomSheet(
                             context: context,
                             shape: const RoundedRectangleBorder(
-                              borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+                              borderRadius: BorderRadius.vertical(
+                                top: Radius.circular(20),
+                              ),
                             ),
                             builder: (context) {
                               return SafeArea(
@@ -241,18 +376,28 @@ class _PengaturanPageState extends State<PengaturanPage> {
                                       padding: const EdgeInsets.all(16),
                                       child: Text(
                                         strings.selectLang,
-                                        style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                                        style: const TextStyle(
+                                          fontSize: 18,
+                                          fontWeight: FontWeight.bold,
+                                        ),
                                       ),
                                     ),
                                     ...supportedLanguages.map((langItem) {
                                       return ListTile(
-                                        leading: Text(langItem['flag']!, style: const TextStyle(fontSize: 24)),
+                                        leading: Text(
+                                          langItem['flag']!,
+                                          style: const TextStyle(fontSize: 24),
+                                        ),
                                         title: Text(langItem['name']!),
                                         trailing: lang == langItem['code']
-                                            ? const Icon(Icons.check, color: _medisyTeal)
+                                            ? const Icon(
+                                                Icons.check,
+                                                color: _medisyTeal,
+                                              )
                                             : null,
                                         onTap: () {
-                                          languageNotifier.value = langItem['code']!;
+                                          languageNotifier.value =
+                                              langItem['code']!;
                                           Navigator.pop(context);
                                         },
                                       );
@@ -296,11 +441,15 @@ class _BantuanPageState extends State<BantuanPage> {
       builder: (context, lang, _) {
         final strings = AppStrings.of(lang);
         final faqs = strings.faqs;
+        final colorScheme = Theme.of(context).colorScheme;
 
         return Scaffold(
-          backgroundColor: const Color(0xFFF2F4F7),
+          backgroundColor: colorScheme.surface,
           appBar: AppBar(
-            title: Text(strings.help, style: const TextStyle(fontWeight: FontWeight.w700)),
+            title: Text(
+              strings.help,
+              style: const TextStyle(fontWeight: FontWeight.w700),
+            ),
             backgroundColor: _medisyTeal,
             foregroundColor: Colors.white,
             elevation: 0,
@@ -310,6 +459,7 @@ class _BantuanPageState extends State<BantuanPage> {
             child: ConstrainedBox(
               constraints: const BoxConstraints(maxWidth: 600),
               child: ListView.separated(
+                physics: const ClampingScrollPhysics(),
                 padding: const EdgeInsets.all(16),
                 itemCount: faqs.length,
                 separatorBuilder: (_, __) => const SizedBox(height: 10),
@@ -319,16 +469,27 @@ class _BantuanPageState extends State<BantuanPage> {
                   return AnimatedContainer(
                     duration: const Duration(milliseconds: 250),
                     decoration: BoxDecoration(
-                      color: Colors.white,
+                      color: colorScheme.surfaceContainer,
                       borderRadius: BorderRadius.circular(14),
                       boxShadow: [
-                        BoxShadow(color: Colors.black.withOpacity(0.06), blurRadius: 10, offset: const Offset(0, 3)),
+                        BoxShadow(
+                          color: Colors.black.withOpacity(0.06),
+                          blurRadius: 10,
+                          offset: const Offset(0, 3),
+                        ),
                       ],
-                      border: isExpanded ? Border.all(color: _medisyTeal.withOpacity(0.4), width: 1.2) : null,
+                      border: isExpanded
+                          ? Border.all(
+                              color: _medisyTeal.withOpacity(0.4),
+                              width: 1.2,
+                            )
+                          : null,
                     ),
                     child: InkWell(
                       borderRadius: BorderRadius.circular(14),
-                      onTap: () => setState(() => _expandedIndex = isExpanded ? null : index),
+                      onTap: () => setState(
+                        () => _expandedIndex = isExpanded ? null : index,
+                      ),
                       child: Padding(
                         padding: const EdgeInsets.all(16),
                         child: Column(
@@ -337,16 +498,31 @@ class _BantuanPageState extends State<BantuanPage> {
                             Row(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                const Icon(Icons.help_outline, color: _medisyTeal, size: 20),
+                                const Icon(
+                                  Icons.help_outline,
+                                  color: _medisyTeal,
+                                  size: 20,
+                                ),
                                 const SizedBox(width: 10),
                                 Expanded(
                                   child: Text(
                                     faq['q']!,
-                                    style: const TextStyle(fontSize: 13, fontWeight: FontWeight.w600, color: Color(0xFF1A1A2E), height: 1.4),
+                                    style: TextStyle(
+                                      fontSize: 13,
+                                      fontWeight: FontWeight.w600,
+                                      color: colorScheme.onSurface,
+                                      height: 1.4,
+                                    ),
                                   ),
                                 ),
                                 const SizedBox(width: 6),
-                                Icon(isExpanded ? Icons.keyboard_arrow_up : Icons.keyboard_arrow_down, color: Colors.grey[400], size: 22),
+                                Icon(
+                                  isExpanded
+                                      ? Icons.keyboard_arrow_up
+                                      : Icons.keyboard_arrow_down,
+                                  color: Colors.grey[400],
+                                  size: 22,
+                                ),
                               ],
                             ),
                             if (isExpanded) ...[
@@ -355,7 +531,11 @@ class _BantuanPageState extends State<BantuanPage> {
                                 padding: const EdgeInsets.only(left: 30),
                                 child: Text(
                                   faq['a']!,
-                                  style: TextStyle(fontSize: 13, color: Colors.grey[600], height: 1.5),
+                                  style: TextStyle(
+                                    fontSize: 13,
+                                    color: colorScheme.onSurfaceVariant,
+                                    height: 1.5,
+                                  ),
                                 ),
                               ),
                             ],
@@ -386,11 +566,15 @@ class InformasiPage extends StatelessWidget {
       valueListenable: languageNotifier,
       builder: (context, lang, _) {
         final strings = AppStrings.of(lang);
+        final colorScheme = Theme.of(context).colorScheme;
 
         return Scaffold(
-          backgroundColor: const Color(0xFFF2F4F7),
+          backgroundColor: colorScheme.surface,
           appBar: AppBar(
-            title: Text(strings.information, style: const TextStyle(fontWeight: FontWeight.w700)),
+            title: Text(
+              strings.information,
+              style: const TextStyle(fontWeight: FontWeight.w700),
+            ),
             backgroundColor: _medisyTeal,
             foregroundColor: Colors.white,
             elevation: 0,
@@ -399,15 +583,20 @@ class InformasiPage extends StatelessWidget {
           body: Center(
             child: ConstrainedBox(
               constraints: const BoxConstraints(maxWidth: 600),
-              child: Padding(
+              child: SingleChildScrollView(
+                physics: const ClampingScrollPhysics(),
                 padding: const EdgeInsets.all(16),
                 child: Container(
                   width: double.infinity,
                   decoration: BoxDecoration(
-                    color: Colors.white,
+                    color: colorScheme.surfaceContainer,
                     borderRadius: BorderRadius.circular(16),
                     boxShadow: [
-                      BoxShadow(color: Colors.black.withOpacity(0.07), blurRadius: 14, offset: const Offset(0, 4)),
+                      BoxShadow(
+                        color: Colors.black.withOpacity(0.07),
+                        blurRadius: 14,
+                        offset: const Offset(0, 4),
+                      ),
                     ],
                   ),
                   child: Column(
@@ -417,21 +606,53 @@ class InformasiPage extends StatelessWidget {
                       Image.asset(
                         'assets/images/logo.png',
                         height: 56,
-                        errorBuilder: (_, __, ___) => const Icon(Icons.local_hospital, size: 64, color: _medisyTeal),
+                        errorBuilder: (_, __, ___) => const Icon(
+                          Icons.local_hospital,
+                          size: 64,
+                          color: _medisyTeal,
+                        ),
                       ),
                       const SizedBox(height: 12),
                       const Text(
                         'MEDISY',
-                        style: TextStyle(fontSize: 20, fontWeight: FontWeight.w900, letterSpacing: 2, color: _medisyTeal),
+                        style: TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.w900,
+                          letterSpacing: 2,
+                          color: _medisyTeal,
+                        ),
                       ),
                       const SizedBox(height: 4),
-                      Text('Klinik Utama Medisy', style: TextStyle(fontSize: 13, color: Colors.grey[500])),
+                      Text(
+                        'Klinik Utama Medisy',
+                        style: TextStyle(fontSize: 13, color: Colors.grey[500]),
+                      ),
                       const SizedBox(height: 24),
-                      Divider(height: 1, color: Colors.grey[100]),
-                      _InfoTile(icon: Icons.tag, label: strings.versionLabel, value: '1.0.0', showDivider: true),
-                      _InfoTile(icon: Icons.code, label: strings.builtWithLabel, value: 'Flutter', showDivider: true),
-                      _InfoTile(icon: Icons.phone_outlined, label: strings.contactLabel, value: '(021) 1234-5678', showDivider: true),
-                      _InfoTile(icon: Icons.location_on_outlined, label: strings.addressLabel, value: 'Jl. Medisy Raya No.1, Jakarta', showDivider: false),
+                      Divider(height: 1, color: colorScheme.outlineVariant),
+                      _InfoTile(
+                        icon: Icons.tag,
+                        label: strings.versionLabel,
+                        value: '1.0.0',
+                        showDivider: true,
+                      ),
+                      _InfoTile(
+                        icon: Icons.code,
+                        label: strings.builtWithLabel,
+                        value: 'Flutter',
+                        showDivider: true,
+                      ),
+                      _InfoTile(
+                        icon: Icons.phone_outlined,
+                        label: strings.contactLabel,
+                        value: '(021) 1234-5678',
+                        showDivider: true,
+                      ),
+                      _InfoTile(
+                        icon: Icons.location_on_outlined,
+                        label: strings.addressLabel,
+                        value: 'Jl. Medisy Raya No.1, Jakarta',
+                        showDivider: false,
+                      ),
                       const SizedBox(height: 20),
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 20),
@@ -441,7 +662,11 @@ class InformasiPage extends StatelessWidget {
                               context: context,
                               applicationName: 'Medisy',
                               applicationVersion: '1.0.0',
-                              applicationIcon: const Icon(Icons.local_hospital, color: _medisyTeal, size: 36),
+                              applicationIcon: const Icon(
+                                Icons.local_hospital,
+                                color: _medisyTeal,
+                                size: 36,
+                              ),
                               children: [Text(strings.aboutDesc)],
                             );
                           },
@@ -450,7 +675,9 @@ class InformasiPage extends StatelessWidget {
                           style: OutlinedButton.styleFrom(
                             foregroundColor: _medisyTeal,
                             side: const BorderSide(color: _medisyTeal),
-                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10),
+                            ),
                             minimumSize: const Size(double.infinity, 44),
                           ),
                         ),
